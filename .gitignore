@@ -1,0 +1,32 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
+*.local.*
+
+# Runtime data / backups (not publication assets)
+/data/
+/backups/
+/exports/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.bak
+
+# Excel temporary lock files; keep future source/workbook assets
+~$*
+*.tmp
+
+# Development environments / generated test output
+.venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+/test-results/
+/playwright-report/

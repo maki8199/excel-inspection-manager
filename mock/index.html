@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Excel操作見本｜数値ラベルと使用履歴</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e9ece9;color:#252d28;font:15px 'Yu Gothic UI',Meiryo,'Hiragino Sans',sans-serif}button,input,select{font:inherit}button{min-height:42px;padding:8px 16px;border:1px solid #a8b2aa;background:#fff;color:#263c2e;cursor:pointer;border-radius:2px}button:hover{background:#eef5ef}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #c88918;outline-offset:2px}.primary{background:#217346;color:white;border-color:#217346}.primary:hover{background:#175632}.danger{color:#a33c2f;border-color:#c79289}.quiet{color:#69746b;font-size:13px}.intro{background:#fff;padding:13px 22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.intro strong{font-size:18px}.intro small{display:block;color:#647269;margin-top:4px}.intro #reset{margin-left:auto}.titlebar{background:#217346;color:#fff;padding:10px 22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px}.ribbon{background:#f6f7f6;padding:9px 22px;display:flex;gap:23px;color:#657168;font-size:13px;border-bottom:1px solid #b9c5bc}.ribbon b{color:#217346}.formula{padding:6px 20px;display:flex;gap:24px;background:white;border-bottom:1px solid #ccc;font-size:12px;color:#666}.letters{display:grid;grid-template-columns:34px repeat(12,1fr);height:23px;background:#f0f2f0;text-align:center;color:#707a72;font-size:12px}.letters span{border-right:1px solid #d0d6d1;padding-top:3px}.sheet{position:relative;background-color:#fff;background-image:linear-gradient(#e9ede9 1px,transparent 1px),linear-gradient(90deg,#e9ede9 1px,transparent 1px);background-size:calc((100vw - 34px)/12) 28px;min-height:580px;padding:22px 30px 28px 54px}.rows{position:absolute;top:0;left:0;width:34px;background:#f0f2f0;text-align:center;color:#758077;font-size:12px}.rows span{display:block;height:28px;padding-top:5px;border-bottom:1px solid #d4dad5}.board{background:#fff;border:1px solid #b7c6ba;padding:22px;max-width:1380px;margin:auto;min-width:0}.sheethead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.sheethead h1{font-size:24px;font-weight:600;margin:0 auto 0 0}.marker{border:1px solid #c8d9cb;color:#587762;background:#f2f7f3;padding:4px 9px;font-size:12px}.context{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#f3f6f3;padding:14px;margin-bottom:20px}.context label{font-weight:bold}.context select{min-width:190px}.context .check{margin-left:auto;font-size:13px;font-weight:normal}.check{display:flex;gap:9px;align-items:center;line-height:1.7}.check input{width:20px;height:20px;flex-shrink:0}input:not([type=checkbox]),select{border:1px solid #a5b3a9;border-radius:0;background:#fff;min-height:42px;padding:8px 10px;min-width:0;max-width:100%}.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.slot{min-height:167px;padding:14px;text-align:left;background:#f8fbf8;border:1px solid #a9c4af;display:flex;flex-direction:column;align-items:stretch;gap:7px}.slot b{font-size:17px}.slothead{display:flex;align-items:center;justify-content:space-between;gap:6px}.badge{font-size:11px;padding:3px 6px;color:#236340;background:#e4f0e6;white-space:nowrap}.slot .numbers{display:grid;grid-template-columns:38px 1fr;gap:4px;color:#283b2e;align-items:baseline}.numbers strong{font:600 22px Consolas,monospace;text-align:right}.numbers small{font-size:12px}.slot .unit{align-self:flex-end;color:#66776b;font-size:12px}.slot .itemid{font:11px Consolas,monospace;color:#738277}.slot.empty{border-style:dashed;background:#fff;color:#6e7c70;justify-content:center}.slot.empty b{color:#495d4e}.slot.pending{background:#fff9ed;border-color:#d2b476}.slot.pending .badge{background:#ffebbc;color:#765516}.slot.pending .numbers{color:#826733}.footnote{font-size:13px;color:#677269;line-height:1.7;margin:18px 0 0}.tabs{display:flex;background:#f1f3f1;border-top:1px solid #c2cdc5;padding-left:54px;gap:2px}.tabs button{border:0;border-right:1px solid #d4ddd6;background:transparent;border-bottom:3px solid transparent}.tabs .active{background:white;color:#217346;border-bottom-color:#217346;font-weight:bold}.status{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;padding:8px 20px;font-size:12px;background:#e0e9e2;color:#3f5948}.legend{padding:13px 24px 24px;line-height:1.8;font-size:13px;color:#526456}.legend p{margin:4px 0}.legend summary{cursor:pointer;color:#294d37}.startup{padding:15px;background:#fff1c9;color:#674b12;margin:12px}.filters{display:grid;grid-template-columns:110px minmax(210px,310px) auto;gap:14px;align-items:end;margin-bottom:15px}.filters label{display:flex;flex-direction:column;gap:6px;font-size:13px}.filters button{justify-self:start}.presets{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;color:#6b756e;font-size:12px}.presets button{min-height:32px;padding:4px 11px;font-size:12px}.result{background:#f3f8f4;border-left:4px solid #217346;padding:16px 20px;margin-bottom:20px;line-height:1.7}.result h2{font-size:16px;margin:0 0 8px}.result strong.limit{font:600 27px Consolas,monospace;margin:0 10px 0 6px}.result.stopped{background:#fff7e8;border-color:#bb862e}.result.empty-result{background:#f5f5f5;border-color:#a9b1ac;color:#66736a}.result p{margin:6px 0}.tablewrap{overflow:auto;max-width:100%;border:1px solid #c6d3c9}table{border-collapse:collapse;min-width:890px;width:100%;font-size:13px}th{background:#edf3ee;color:#49604f;font-weight:600;text-align:left;white-space:nowrap}th,td{padding:11px 12px;border-bottom:1px solid #d9e2db;vertical-align:top}td{line-height:1.7}td small{display:block;color:#6e796f;font-size:11px}tr:last-child td{border-bottom:0}.history-row td.limits{font:15px Consolas,monospace;white-space:nowrap}td .row-open{padding:3px 9px;min-height:32px;font-size:12px}.stop-row{background:#fcfaf5}.table-caption{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 9px}.table-caption h2{font-size:17px;margin:0}.empty-message{padding:24px;color:#6a766d;text-align:center}.formtitle{display:flex;align-items:center;gap:10px;position:sticky;top:0;background:#fff;border-bottom:1px solid #b8c2bb;padding:10px 16px;z-index:1}.formtitle span{margin-right:auto;font-size:15px;font-weight:bold}.formtitle #close{font-size:23px;padding:1px 12px;min-height:34px;border:0}.formbody{padding:22px;background:#f3f4f3}.formbody h2{font-size:22px;margin:0 0 13px}.fixed{background:#e7ede8;padding:11px 13px;line-height:1.7;margin-bottom:16px;font-size:14px}.formbuttons{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;margin-top:22px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.fields label{display:flex;flex-direction:column;gap:6px;font-size:14px}.wide{grid-column:1/-1}.demo{font-size:12px;color:#866622;line-height:1.7;margin:13px 0}.preview-values{background:white;border:1px solid #d1ddd4;padding:14px;margin-top:15px;font-size:16px}.detail-range{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}.detail-range div{background:white;border:1px solid #c5d6ca;padding:17px;color:#5b6d60;font-size:13px}.detail-range strong{display:block;font:600 30px Consolas,monospace;color:#294b34;margin-top:7px}.details-list{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 12px;font-size:13px;line-height:1.6}.details-list dt{color:#68776b}.details-list dd{margin:0;overflow-wrap:anywhere}.label-layout{display:flex;align-items:center;gap:25px;flex-wrap:wrap}.label-preview{width:200px;height:200px;flex-shrink:0;background:#fff;border:1px dashed #999;display:flex;flex-direction:column;justify-content:center;align-items:stretch;padding:17px;gap:12px}.label-preview div{display:flex;align-items:center;justify-content:space-between;gap:10px}.label-preview strong{font:600 27px Consolas,monospace}.label-preview small{align-self:center;color:#555}.label-help{flex:1;min-width:190px;font-size:13px;line-height:1.8}.label-controls{border-top:1px solid #d3dcd5;margin-top:20px;padding-top:16px}.label-controls>button{margin-bottom:10px}.destinations{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:15px}.destinations button{font-size:13px;padding:10px 5px}.destinations small{display:block;font-size:10px;margin-top:4px}.destinations .selected{background:#deeee2;border:2px solid #217346}.summary{padding:13px;background:#e5ede7;margin:15px 0;font-size:13px;line-height:1.8}.error{color:#a23428;background:#fff1ec;padding:10px;margin:0 0 15px;font-size:13px}.error:empty{display:none}dialog{width:min(680px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #8d9b90;box-shadow:0 8px 28px #0002;overflow:auto;color:inherit}dialog::backdrop{background:#142a2040}[hidden]{display:none!important}
+@media(max-width:900px){.sheet{padding:16px 16px 20px 44px}.board{padding:17px}.slots{gap:10px}.slot{padding:10px}.numbers strong{font-size:20px}.slothead{flex-wrap:wrap}.intro{padding:12px 16px}.filters{grid-template-columns:100px minmax(190px,1fr) auto}}
+@media(max-width:620px){.sheet{padding:12px 10px 18px 30px}.rows{width:24px}.letters{grid-template-columns:24px repeat(12,1fr)}.board{padding:13px}.slots{grid-template-columns:repeat(2,minmax(0,1fr))}.slot{min-height:158px}.sheethead h1{font-size:21px}.sheethead button{font-size:12px;padding:7px 9px}.context{padding:10px;gap:8px}.context select{min-width:0;flex:1}.context .check{margin-left:0;width:100%}.filters{grid-template-columns:1fr}.filters button{width:100%}.presets{align-items:flex-start}.fields{grid-template-columns:1fr}.wide{grid-column:auto}.intro strong{font-size:16px}.intro small{font-size:11px}.intro #reset{font-size:12px;padding:7px 9px}.titlebar{font-size:11px}.ribbon{gap:16px;padding:8px 14px;font-size:11px}.ribbon span:nth-last-child(-n+2){display:none}.formula{gap:12px;font-size:10px}.tabs{padding-left:30px}.legend{padding:12px 16px}.formbody{padding:16px}.formtitle{padding:9px;gap:5px}.formtitle span{font-size:13px}.detail-range{gap:8px}.detail-range div{padding:12px}.detail-range strong{font-size:24px}.result strong.limit{font-size:23px}.destinations{grid-template-columns:repeat(2,minmax(0,1fr))}.label-preview{width:170px;height:170px}.label-preview strong{font-size:23px}}
+.position-filter{display:flex;align-items:center;gap:12px;margin:0 0 18px}.position-filter label{font-size:14px;font-weight:bold}.position-filter select{min-width:130px}.completion-inline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 14px;background:#fff7e6;border:1px solid #d9c59b;font-size:12px;line-height:1.7}.completion-inline span{flex:1;min-width:190px}.completion-inline button{flex-shrink:0;font-size:13px}
+</style></head>
+<body>
+<header class="intro"><div><strong>Excel版の操作見本</strong><small>数値ラベルと位置ごとの使用履歴 ／ 架空データ・仮計算・実印刷なし</small></div><button id="reset">見本をリセット</button></header>
+<p id="startup-warning" class="startup">操作部分が表示されない場合は、このHTMLをSafari／Chromeなどの通常ブラウザーで開いてください。アプリ内プレビューでは動作しないことがあります。</p>
+<div class="titlebar"><span>点検基準管理.xlsm — シート＋UserForm 構成案</span><span id="clock"></span></div>
+<div class="ribbon" aria-hidden="true"><b>ホーム</b><span>挿入</span><span>ページ レイアウト</span><span>数式</span><span>データ</span><span>表示</span><span>見た目のみ</span></div>
+<div class="formula" aria-hidden="true"><span>B2</span><span>ƒx</span><span>セルを直接編集せず、ボタンから操作</span></div>
+<div class="letters" aria-hidden="true"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span></div>
+<main class="sheet"><div class="rows" aria-hidden="true"></div><section id="board" class="board"></section></main>
+<nav class="tabs" aria-label="シート切替"><button data-tab="manage" class="active">セット管理</button><button data-tab="history">使用履歴</button></nav>
+<div class="status"><span id="status" role="status">見本データを表示しています</span><span>Excel／VBAではありません・業務データは再読込で初期化</span></div>
+<aside class="legend"><p>「使用履歴」で管理No.と位置を選ぶと、過去の上下限を一覧で遡れます。ラベルは個体詳細の「ラベル発行」から即発行します（見本）。</p><details><summary>Excelでの構成と、この見本の範囲</summary><p>8枠はシート上の図形、入力はUserForm、使用履歴は読み取り専用のシートを想定。点検は現物の数値ラベルを見て行うため、QR読み取り画面はありません。</p><p>データはセット・個体・確定値・切替履歴を分けます。終了日時は保存せず、同じ位置の次の切替までを適用期間として表示します。印刷履歴は別の補助データです。</p><p>測定値±許容差、6桁丸めは説明用で実点検禁止。貼付完了操作は案。実プリンター・本番台帳・点検結果システムには接続しません。見本時計は保存操作ごとに1分進みます。</p><p>「修正指示」で画面を囲んでコメントできます。コメントはブラウザーに保持し、「指示を書き出す」のJSONで共有します。見本リセットではコメントを消しません。</p></details></aside>
+<dialog id="form"><header class="formtitle"><span id="form-title"></span><button id="close" type="button" aria-label="閉じる">×</button></header><div id="form-body" class="formbody"></div></dialog>
+<script>/* Sample-only state. No storage, network, printer, or business database access. */
+(() => {
+  'use strict';
+  const id=(prefix,n)=>prefix+'-'+String(n).padStart(6,'0');
+  const must=(ok,message)=>{if(!ok)throw new Error(message)};
+  function setOf(s,set){const group=s.sets.find(g=>g.id===set);must(group,'管理No.が見つかりません');return group}
+  function slot(s,set,pos){must(Number.isInteger(pos)&&pos>=1&&pos<=8,'位置が不正です');return setOf(s,set).slots[pos-1]||{item:null,record:null,pending:null}}
+  function editable(s,set){must(setOf(s,set).state==='active','廃止済みセットは変更できません')}
+  const recordOf=(s,record)=>s.records.find(r=>r.id===record);
+  function tick(s){s.now=new Date(Date.parse(s.now+'Z')+60000).toISOString().slice(0,19);return s.now}
+  function event(s,set,pos,state,item,record,action,at=s.now,operator='見本担当',reason=''){
+    const e={id:id('USE',s.seq.event++),set,pos,at,state,item,record,action,operator,reason};s.events.push(e);return e;
+  }
+  function validate(d){
+    must(String(d.measurement??'').trim()!==''&&String(d.tolerance??'').trim()!=='','測定値と許容差を入力してください');
+    const m=Number(d.measurement),t=Number(d.tolerance);
+    must(Number.isFinite(m)&&Number.isFinite(t)&&t>0,'測定値は有限の数値、許容差は正の数値にしてください');
+    must(Math.abs(m)<=1000000&&t<=1000000,'見本では絶対値1000000以下を入力してください');
+    const lower=Number((m-t).toFixed(6)),upper=Number((m+t).toFixed(6));
+    must(lower<upper,'見本の6桁丸めで上下限が同じになります。許容差を見直してください');
+    must(String(d.unit??'').trim()&&String(d.operator??'').trim(),'単位と作業者を入力してください');
+    return {measurement:m,tolerance:t,lower,upper,unit:String(d.unit).trim(),operator:String(d.operator).trim()};
+  }
+  function seed(){
+    const s={now:'2026-09-27T10:00:00',sets:[],items:[],records:[],events:[],labels:[],seq:{set:3,item:5,record:6,event:1,label:1}};
+    s.sets=[1,2].map(n=>({id:id('SET',n),state:'active',created:'2026-09-01T09:00:00',slots:Array(8).fill(null)}));
+    s.items=[1,2,3,4].map(n=>({id:id('ITM',n),state:n===1?'retired':'active',created:n===2?'2026-09-20T12:10:00':'2026-09-01T09:00:00'}));
+    const samples=[['ITM-000001',10.25,.05,'2026-09-01T09:00:00','初回登録'],['ITM-000001',10.3,.05,'2026-09-10T10:00:00','再測定'],['ITM-000002',10.4,.05,'2026-09-20T12:10:00','別の実物を登録'],['ITM-000003',8.5,.1,'2026-09-01T09:00:00','初回登録'],['ITM-000004',12,.2,'2026-09-01T09:00:00','初回登録']];
+    s.records=samples.map(([item,measurement,tolerance,at,reason],i)=>({id:id('REC',i+1),item,...validate({measurement,tolerance,unit:'mm',operator:'見本担当'}),at,reason,formula:'DEMO-ABS-1',rounding:'小数6桁（見本）'}));
+    const a=s.sets[0].id,b=s.sets[1].id;
+    event(s,a,1,'active','ITM-000001','REC-000001','初回登録','2026-09-01T09:00:00');
+    event(s,a,1,'stopped','ITM-000001','REC-000002','修正・貼替待ち','2026-09-10T10:00:00');
+    event(s,a,1,'active','ITM-000001','REC-000002','再測定・照合完了','2026-09-10T10:10:00');
+    event(s,a,1,'stopped',null,null,'削除・取り外し','2026-09-20T12:00:00');
+    event(s,a,1,'active','ITM-000002','REC-000003','別個体・照合完了','2026-09-20T12:30:00');
+    event(s,a,3,'active','ITM-000003','REC-000004','初回登録','2026-09-01T09:00:00');
+    event(s,b,1,'active','ITM-000004','REC-000005','初回登録','2026-09-01T09:00:00');
+    s.sets[0].slots[0]={item:'ITM-000002',record:'REC-000003',pending:null};
+    s.sets[0].slots[2]={item:'ITM-000003',record:'REC-000004',pending:null};
+    s.sets[1].slots[0]={item:'ITM-000004',record:'REC-000005',pending:null};
+    return s;
+  }
+  function history(s,set,pos){return s.events.filter(e=>e.set===set&&e.pos===pos).sort((a,b)=>a.at.localeCompare(b.at)||a.id.localeCompare(b.id))}
+  function lookup(s,set,pos,at){
+    if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(at)||!Number.isFinite(Date.parse(at+'Z')))return {status:'invalid'};
+    at=at.length===16?at+':00':at;
+    if(new Date(at+'Z').toISOString().slice(0,19)!==at)return {status:'invalid'};
+    if(at>s.now)return {status:'future'};
+    const rows=history(s,set,pos), candidates=rows.filter(e=>e.at<=at);
+    if(!candidates.length)return {status:'unknown'};
+    const latest=candidates.at(-1),same=candidates.filter(e=>e.at===latest.at);
+    if(same.length!==1)return {status:'ambiguous'};
+    const next=rows.find(e=>e.at>latest.at);
+    if(latest.state!=='active')return {status:'stopped',event:latest,next};
+    const record=recordOf(s,latest.record);
+    if(!record||record.item!==latest.item)return {status:'unknown'};
+    return {status:'active',event:latest,next,record};
+  }
+  function save(s,set,pos,d){
+    editable(s,set);const before=slot(s,set,pos),values=validate(d);
+    must(!before.pending,'貼付・照合待ちの記録を先に完了してください');
+    if(before.item)must(String(d.reason??'').trim(),'修正理由を入力してください');
+    tick(s);let item=before.item;
+    if(!item){item=id('ITM',s.seq.item++);s.items.push({id:item,state:'active',created:s.now})}
+    const record={id:id('REC',s.seq.record++),item,...values,at:s.now,reason:before.item?String(d.reason).trim():'新規登録',formula:'DEMO-ABS-1',rounding:'小数6桁（見本）'};
+    s.records.push(record);
+    setOf(s,set).slots[pos-1]={item,record:before.record,pending:record.id};
+    event(s,set,pos,'stopped',item,record.id,before.item?'修正・貼替待ち':'新規・貼付待ち',s.now,values.operator,record.reason);
+    return record;
+  }
+  function issue(s,set,pos){
+    editable(s,set);const sl=slot(s,set,pos),record=sl.pending||sl.record;must(sl.item&&record,'発行対象がありません');
+    tick(s);
+    // Only the latest unverified issuance is eligible for attachment verification.
+    for(const old of s.labels)if(old.item===sl.item&&old.record===record&&!old.verifiedAt&&!old.supersededAt)old.supersededAt=s.now;
+    const row={id:id('LBL',s.seq.label++),item:sl.item,record,requestedAt:s.now,verifiedAt:null,supersededAt:null,operator:recordOf(s,record).operator};s.labels.push(row);return row;
+  }
+  function activate(s,set,pos){
+    editable(s,set);const sl=slot(s,set,pos),record=sl.pending||sl.record;
+    const label=[...s.labels].reverse().find(l=>l.item===sl.item&&l.record===record&&!l.verifiedAt&&!l.supersededAt);
+    must(label,'先にラベルを模擬発行してください');tick(s);label.verifiedAt=s.now;
+    if(sl.pending){sl.record=sl.pending;sl.pending=null;event(s,set,pos,'active',sl.item,sl.record,'貼付・照合完了',s.now,label.operator)}
+    return label;
+  }
+  function retire(s,set,pos){
+    editable(s,set);const sl=slot(s,set,pos);must(sl.item,'削除対象がありません');tick(s);
+    s.items.find(i=>i.id===sl.item).state='retired';setOf(s,set).slots[pos-1]=null;
+    event(s,set,pos,'stopped',null,null,'削除・取り外し',s.now,'見本担当',sl.item+' を使用終了');
+  }
+  function transfer(s,from,pos,to,target){
+    editable(s,from);editable(s,to);must(from!==to||pos!==target,'同じ位置には移動できません');
+    const a=slot(s,from,pos),b=slot(s,to,target);
+    must(a.item&&!a.pending&&a.record,'貼付・照合が完了した個体を選んでください');
+    must(!b.pending,'移動先は貼付・照合待ちです');
+    tick(s);setOf(s,to).slots[target-1]={...a};setOf(s,from).slots[pos-1]=b.item?{...b}:null;
+    const action=b.item?'交換':'移動';
+    event(s,from,pos,b.item?'active':'stopped',b.item,b.record,action,s.now,'見本担当',to+' 位置'+target+' と対応');
+    event(s,to,target,'active',a.item,a.record,action,s.now,'見本担当',from+' 位置'+pos+' から');
+  }
+  function createSet(s){tick(s);const g={id:id('SET',s.seq.set++),state:'active',created:s.now,slots:Array(8).fill(null)};s.sets.push(g);return g}
+  function retireSet(s,set){
+    editable(s,set);tick(s);setOf(s,set).state='retired';
+    for(let pos=1;pos<=8;pos++)event(s,set,pos,'stopped',null,null,'セット廃止');
+  }
+  globalThis.HistoryMockModel={seed,slot,recordOf,history,lookup,validate,save,issue,activate,retire,transfer,createSet,retireSet};
+})();
+</script>
+<script>(() => {
+'use strict';
+const M=HistoryMockModel,$=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const time=v=>v?v.replace('T',' '):'—';
+const number=v=>Number(v).toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:6});
+let state=M.seed(),current='SET-000001',tab='manage',includeRetired=false,active=null;
+let hPos=1,destination='',target=null,selectedEvent=null;
+const group=()=>state.sets.find(g=>g.id===current),record=id=>M.recordOf(state,id);
+const options=(all=false)=>state.sets.filter(g=>all||g.state==='active').map(g=>`<option value="${g.id}">${g.id}${g.state==='retired'?'（廃止）':''}</option>`).join('');
+const posOptions=()=>Array.from({length:8},(_,i)=>`<option value="${i+1}">位置 ${i+1}</option>`).join('');
+const fmtRange=r=>`下限 ${number(r.lower)} ／ 上限 ${number(r.upper)} ${esc(r.unit)}`;
+function message(v){$('#status').textContent=v}
+function close(){if($('#form').open)$('#form').close();selectedEvent=null}
+function modal(title,body){$('#form-title').textContent='UserForm — '+title;$('#form-body').innerHTML='<div id="form-error" class="error" role="alert"></div>'+body;if(!$('#form').open)$('#form').showModal();$('#form').scrollTop=0}
+function activeSlot(){return M.slot(state,active.set,active.pos)}
+function fixed(){return `<div class="fixed">${esc(active.set)} ／ 位置 ${active.pos}</div>`}
+function buttons(body){return '<div class="formbuttons">'+body+'</div>'}
+function context(){return `<div class="context"><label for="set">管理No.</label><select id="set" aria-label="管理No.">${options(includeRetired)}</select><span>${group()?.state==='retired'?'廃止・閲覧のみ':'使用中'}</span><label class="check"><input type="checkbox" id="include-retired" ${includeRetired?'checked':''}>廃止セットも表示</label></div>`}
+function render(){
+ if(!state.sets.some(g=>g.id===current&&(includeRetired||g.state==='active')))current=state.sets.find(g=>includeRetired||g.state==='active')?.id||'';
+ document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('active',b.dataset.tab===tab);b.setAttribute('aria-current',b.dataset.tab===tab?'page':'false')});
+ $('#clock').textContent='見本時計 '+time(state.now)+' JST';
+ if(tab==='manage')renderManage();else renderHistory();
+ if($('#set'))$('#set').value=current;
+}
+function renderManage(){
+ const g=group();
+ $('#board').innerHTML=`<div class="sheethead"><h1>セット管理</h1><span class="marker">シート</span><button id="new-set" class="primary">新規セットを作成</button>${g?.state==='active'?'<button id="retire-set" class="danger">セット廃止</button>':''}</div>${context()}${g?`<div class="slots">${Array.from({length:8},(_,i)=>{
+ const sl=M.slot(state,current,i+1),r=record(sl.pending||sl.record),pending=!!sl.pending,retired=g.state==='retired';
+ return `<button class="slot ${!sl.item?'empty':''} ${pending?'pending':''}" data-slot="${i}" aria-label="位置${i+1} ${retired?'履歴':sl.item?pending?'貼付待ち':'個体詳細':'空き枠'}"><div class="slothead"><b>位置 ${i+1}</b>${sl.item?`<span class="badge">${retired?'廃止':pending?'貼付待ち':'使用中'}</span>`:''}</div>${sl.item?`<div class="numbers"><small>上限</small><strong>${number(r.upper)}</strong><small>下限</small><strong>${number(r.lower)}</strong></div><span class="unit">${esc(r.unit)}${pending?' ／ 使用停止中':''}</span><span class="itemid">${sl.item}</span>`:`<span>${retired?'履歴を見る':'＋ 登録'}</span><small>${retired?'過去の記録は保持':'空き枠'}</small>`}</button>`;
+ }).join('')}</div>`:'<p class="empty-message">使用中のセットはありません。新規作成するか、廃止セットを表示してください。</p>'}<p class="footnote">普段の点検は現物の数値ラベルで確認します。以前の上下限は「使用履歴」から調べられます。</p>`;
+}
+function renderHistory(){
+ const rows=M.history(state,current,hPos),counts=new Map();
+ rows.forEach(e=>counts.set(e.at,(counts.get(e.at)||0)+1));
+ const ordered=rows.map((e,i)=>({e,next:rows[i+1]})).reverse();
+ $('#board').innerHTML=`<div class="sheethead"><h1>使用履歴</h1><span class="marker">シート・閲覧専用</span></div>${context()}<div class="position-filter"><label for="history-position">位置</label><select id="history-position" name="position">${posOptions()}</select></div><div class="table-caption"><h2>位置 ${hPos} の変更履歴</h2><span id="history-count" class="quiet">全 ${rows.length}件 ／ 新しい順</span></div><div class="tablewrap"><table id="history-table"><thead><tr><th>切替日時／適用期間</th><th>状態・変更内容</th><th>下限</th><th>上限</th><th>単位</th><th>個体・測定記録</th><th>変更者</th><th>詳細</th></tr></thead><tbody>${ordered.map(({e,next})=>{
+ const dup=counts.get(e.at)>1,r=e.state==='active'&&!dup?record(e.record):null;
+ return `<tr class="history-row ${e.state!=='active'?'stop-row':''}" data-history-id="${e.id}"><td>${time(e.at)}<small>${dup?'同時刻重複・適用区間を特定できません':next?'次の切替 '+time(next.at)+' 未満':e.state==='active'?'現在まで使用中':'現在も停止・空き'}</small></td><td>${dup?'要確認':e.state==='active'?'使用中':'使用停止・空き'}<small>${esc(e.action)}</small></td><td class="limits">${r?number(r.lower):'—'}</td><td class="limits">${r?number(r.upper):'—'}</td><td>${r?esc(r.unit):'—'}</td><td>${e.item||'—'}<small>${e.record||'—'}</small></td><td>${esc(e.operator)}</td><td><button class="row-open" data-event="${e.id}">詳細</button></td></tr>`;
+ }).join('')||'<tr><td colspan="8" class="empty-message">この位置の履歴はまだありません。</td></tr>'}</tbody></table></div><p class="footnote">選択した位置の全履歴です。下へスクロールして過去を確認できます。終了日時は次の切替から表示し、使用停止中は上下限を適用しません。</p>`;
+ $('#history-position').value=String(hPos);
+}
+function goHistory(set=current,pos=1){close();current=set;hPos=pos;tab='history';if(state.sets.find(g=>g.id===set)?.state==='retired')includeRetired=true;render()}
+function detail(pos){
+ active={set:current,pos};selectedEvent=null;
+ if(group().state==='retired'){goHistory(current,pos);return}
+ const sl=activeSlot();if(!sl.item){edit();return}const r=record(sl.pending||sl.record);
+ const logs=state.labels.filter(l=>l.item===sl.item&&l.record===r.id),open=logs.some(l=>!l.verifiedAt&&!l.supersededAt);
+ modal('個体詳細',`<h2>位置 ${pos}${sl.pending?' — 貼付・照合待ち':''}</h2>${fixed()}${sl.pending?'<p class="demo">保存済みの新しい値です。貼付・照合が完了するまで、この個体は使用停止です。</p>':''}<div class="detail-range"><div>下限<strong>${number(r.lower)}</strong>${esc(r.unit)}</div><div>上限<strong>${number(r.upper)}</strong>${esc(r.unit)}</div></div><dl class="details-list"><dt>個体ID</dt><dd>${sl.item}</dd><dt>測定記録</dt><dd>${r.id}</dd><dt>確定日時</dt><dd>${time(r.at)}</dd></dl><p id="issue-status" class="quiet" role="status">${logs.length?'模擬発行 '+logs.length+'件 ／ '+(open?'貼付・照合未完了':'照合記録あり'):'ラベルは未発行です。'}</p>${open?'<div class="completion-inline"><span>現物・印字値を照合し、必要な旧ラベル撤去・貼付を終えたら押してください。</span><button id="activate-label">貼付・照合を完了</button></div>':''}${buttons(`<button data-do="history">この位置の履歴</button><button data-do="edit" ${sl.pending?'disabled':''}>修正</button><button data-do="move" ${sl.pending?'disabled':''}>移動</button><button data-do="delete" class="danger">削除</button><button data-do="label" class="primary">ラベル発行</button>`)}`);
+}
+function edit(){
+ const sl=activeSlot(),r=record(sl.record);mustActive();
+ modal(sl.item?'修正':'登録',`<h2>${sl.item?'測定値を修正':'新しい個体を登録'}</h2>${fixed()}<form id="edit"><div class="fields"><label>測定値<input name="measurement" type="number" step="any" required min="-1000000" max="1000000" value="${r?.measurement??''}"></label><label>許容差（±）<input name="tolerance" type="number" step="any" required min="0.000001" max="1000000" value="${r?.tolerance??''}"></label><label>単位<input name="unit" required maxlength="20" value="${esc(r?.unit??'mm')}"></label><label>作業者<input name="operator" required maxlength="80" value="${esc(r?.operator??'見本担当')}"></label>${sl.item?'<label class="wide">修正理由<input name="reason" required maxlength="300"></label>':''}</div><div id="calc-preview" class="preview-values">測定値と許容差を入力してください。</div><p class="demo">測定値 ± 許容差の仮計算（小数6桁）。実点検には使えません。${sl.item?'保存するとこの位置を使用停止にし、貼り替え・照合後に新しい値で再開する見本です。':'保存後、ラベルの発行・貼付・照合へ進みます。'}</p>${buttons('<button type="button" data-do="history">この位置の履歴</button><button type="button" data-do="close">キャンセル</button><button type="submit" class="primary">保存</button>')}</form>`);calcPreview();
+}
+function mustActive(){if(state.sets.find(g=>g.id===active.set)?.state!=='active')throw new Error('廃止セットは閲覧のみです')}
+function calcPreview(){try{const d=Object.fromEntries(new FormData($('#edit'))),r=M.validate(d);$('#calc-preview').innerHTML=fmtRange(r)}catch(_){$('#calc-preview').textContent='測定値・正の許容差・単位・作業者を入力してください。'}}
+function issueNow(){
+ M.issue(state,active.set,active.pos);render();detail(active.pos);
+ message('ラベルを模擬発行しました。実プリンターには送信していません。');
+}
+function removal(){modal('個体を削除',`<h2>位置 ${active.pos} の個体を使用終了</h2>${fixed()}<p>${activeSlot().item} を削除して、この枠を空けます。過去の上下限と履歴は残ります。</p><label class="check"><input id="physical-check" type="checkbox">使用対象から除外し、現物・旧ラベルの誤使用を防ぐ対応を確認した（見本）</label>${buttons('<button data-do="close">キャンセル</button><button id="commit-delete" class="danger" disabled>削除して枠を空ける</button>')}`)}
+function retireGroup(){active={set:current,pos:null};modal('セット廃止',`<h2>${current} を廃止</h2><p>新しい登録・変更はできなくなります。過去の使用履歴は残ります。</p><label class="check"><input id="physical-check" type="checkbox">セットを使用場所から外し、現物と旧ラベルの誤使用防止を確認した（見本）</label>${buttons('<button data-do="close">キャンセル</button><button id="commit-retire-set" class="danger" disabled>セットを廃止</button>')}`)}
+function move(){
+ destination='';target=null;
+ modal('移動・交換',`<h2>移動先を選択</h2>${fixed()}<label for="destination">移動先の管理No.</label><select id="destination" style="width:100%;margin-top:8px"><option value="">選択してください</option>${options()}</select><div id="destinations" class="destinations"></div><div id="summary" class="summary">管理No.と枠を選択してください。</div><label class="check"><input type="checkbox" id="movement-checked">ケースと中身・ラベルの対応を保って現物を移動し、表示した配置を確認した（見本）</label>${buttons('<button data-do="close">キャンセル</button><button id="commit-move" class="primary" disabled>ここへ移動</button>')}<p class="demo">実行時を切替日時として両位置に記録する操作案です。実際の移動は行いません。</p>`);
+}
+function showDestinations(){
+ $('#destinations').innerHTML=destination?Array.from({length:8},(_,i)=>{const sl=M.slot(state,destination,i+1);return `<button data-dest="${i+1}" ${destination===active.set&&i+1===active.pos||sl.pending?'disabled':''} class="${target===i+1?'selected':''}">位置 ${i+1}<small>${sl.pending?'貼付待ち':sl.item||'空き枠'}</small></button>`}).join(''):'';
+ $('#movement-checked').checked=false;
+ $('#commit-move').disabled=true;
+ if(!target){$('#summary').textContent='枠を選択してください。';$('#commit-move').textContent='ここへ移動';return}
+ const a=activeSlot(),b=M.slot(state,destination,target);
+ $('#summary').innerHTML=`${a.item}：${active.set} 位置${active.pos} → ${destination} 位置${target}${b.item?`<br>${b.item}：${destination} 位置${target} → ${active.set} 位置${active.pos}`:''}<br>上下限と測定記録は変わりません。`;
+ $('#commit-move').textContent=b.item?'この個体と交換':'ここへ移動';
+}
+function eventDetail(id){
+ const e=state.events.find(x=>x.id===id);selectedEvent=id;active={set:e.set,pos:e.pos};
+ const r=record(e.record),rows=M.history(state,e.set,e.pos),next=rows.find(n=>n.at>e.at),previous=[...rows].reverse().find(n=>n.at<e.at&&n.state==='active'),prev=record(previous?.record);
+ modal('使用履歴の詳細',`<h2>${esc(e.action)}</h2>${fixed()}<dl class="details-list"><dt>切替日時</dt><dd>${time(e.at)}</dd><dt>次の切替</dt><dd>${next?time(next.at)+' 未満まで':'なし（最新の状態）'}</dd><dt>状態</dt><dd>${e.state==='active'?'使用中':'使用停止・空き。上下限は適用しません。'}</dd><dt>個体ID</dt><dd>${e.item||'—'}</dd><dt>使用履歴ID</dt><dd>${e.id}</dd><dt>測定記録</dt><dd>${e.record||'—'}</dd><dt>変更者</dt><dd>${esc(e.operator)}</dd><dt>変更内容</dt><dd>${esc(e.reason||e.action)}</dd>${prev?`<dt>直前の使用値</dt><dd>${fmtRange(prev)}<br><small>${previous.item} ／ ${previous.record}</small></dd>`:''}${r?`<dt>${e.state==='active'?'今回の使用値':'関連する確定値'}</dt><dd>${fmtRange(r)}${e.state!=='active'?'（未適用）':''}</dd><dt>測定入力</dt><dd>${number(r.measurement)} ± ${number(r.tolerance)} ${esc(r.unit)}</dd><dt>計算方法</dt><dd>${r.formula} ／ ${esc(r.rounding)}</dd><dt>記録の確定</dt><dd>${time(r.at)}</dd><dt>測定・修正理由</dt><dd>${esc(r.reason)}</dd>`:''}</dl>${buttons('<button data-do="close">閉じる</button>')}<p class="demo">履歴は閲覧専用です。過去の値の上書きや、現物を確認せずに戻す操作はありません。</p>`);
+}
+function safe(action){try{action()}catch(e){if($('#form').open&&$('#form-error'))$('#form-error').textContent=e.message;else message(e.message)}}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b||b.disabled||b.closest('#emr-dialog')||b.hasAttribute('data-mock-review-open'))return;
+ safe(()=>{
+ if(b.dataset.tab){tab=b.dataset.tab;render()}
+ else if(b.dataset.slot!==undefined)detail(Number(b.dataset.slot)+1);
+ else if(b.id==='close'||b.dataset.do==='close')close();
+ else if(b.dataset.do==='edit')edit();
+ else if(b.dataset.do==='label')issueNow();
+ else if(b.dataset.do==='delete')removal();
+ else if(b.dataset.do==='move')move();
+ else if(b.dataset.do==='history')goHistory(active.set,active.pos);
+ else if(b.dataset.event)eventDetail(b.dataset.event);
+ else if(b.id==='new-set'){current=M.createSet(state).id;render();message('新しいセットを見本に作成しました')}
+ else if(b.id==='retire-set')retireGroup();
+ else if(b.id==='reset'){close();state=M.seed();current='SET-000001';tab='manage';includeRetired=false;hPos=1;active=null;render();message('業務サンプルを初期化しました。修正コメントは保持しています。')}
+ else if(b.id==='activate-label'){
+   M.activate(state,active.set,active.pos);render();detail(active.pos);message('貼付・照合完了を見本に記録しました。')
+ }
+ else if(b.id==='commit-delete'){if(!$('#physical-check').checked)return;M.retire(state,active.set,active.pos);close();render();message('個体を使用終了にしました。履歴は残っています。')}
+ else if(b.id==='commit-retire-set'){if(!$('#physical-check').checked)return;M.retireSet(state,current);close();includeRetired=true;render();message('セットを廃止しました。過去の履歴は閲覧できます。')}
+ else if(b.dataset.dest){target=Number(b.dataset.dest);showDestinations()}
+ else if(b.id==='commit-move'){if(!target||!$('#movement-checked').checked)return;M.transfer(state,active.set,active.pos,destination,target);current=destination;close();render();message('両位置の切替履歴を記録しました。個体ID・上下限は維持しています。')}
+ });
+});
+document.addEventListener('change',e=>safe(()=>{
+ if(e.target.id==='set'){current=e.target.value;render()}
+ else if(e.target.id==='include-retired'){includeRetired=e.target.checked;render()}
+ else if(e.target.id==='history-position'){hPos=Number(e.target.value);render()}
+ else if(e.target.id==='destination'){destination=e.target.value;target=null;showDestinations()}
+ else if(e.target.id==='physical-check'){const commit=$('#commit-delete')||$('#commit-retire-set');commit.disabled=!e.target.checked}
+ else if(e.target.id==='movement-checked')$('#commit-move').disabled=!target||!e.target.checked;
+}));
+document.addEventListener('input',e=>{
+ if(e.target.closest('#edit'))calcPreview();
+});
+document.addEventListener('submit',e=>{
+ if(e.target.getAttribute('id')!=='edit')return;e.preventDefault();
+ safe(()=>{const d=Object.fromEntries(new FormData(e.target));
+ M.save(state,active.set,active.pos,d);render();detail(active.pos);
+ message('確定値を見本に保存しました。ラベル発行後、貼付・照合を完了してください。');
+ });
+});
+$('#form').addEventListener('cancel',()=>{selectedEvent=null});
+$('.rows').innerHTML=Array.from({length:21},(_,i)=>`<span>${i+1}</span>`).join('');
+window.ExcelMockReviewOptions={projectId:'inspection-numeric-history-v1',getContext(){return {sheet:tab,sheet_label:tab==='manage'?'セット管理':'使用履歴',set_id:current,position:$('#form').open?active?.pos:tab==='history'?hPos:null,form_title:$('#form').open?$('#form-title').textContent:null,event_id:$('#form').open?selectedEvent:null,query_at:null}}};
+// Read-only snapshots for deterministic mock verification, never a business API.
+window.ExcelHistoryMock={snapshot:()=>structuredClone(state)};
+render();$('#startup-warning').hidden=true;
+})();
+</script>
+<script>/* Live DOM region comments. No screenshots, business API calls, or model writes. */
+(() => {
+  'use strict';
+  if (document.getElementById('emr-dialog')) return;
+  const options = window.ExcelMockReviewOptions || {};
+  const project = options.projectId || location.pathname;
+  const key = 'excel-mock-review:v1:' + project;
+  const style = document.createElement('style');
+  style.textContent = `
+[data-mock-review-open]{border:1px solid #9a6428!important;color:#754512!important;background:#fff7e9!important;min-height:38px!important;font-size:14px!important;padding:7px 13px!important;margin-left:8px!important;white-space:nowrap}
+#emr-dialog{position:fixed;inset:0;margin:0;width:100vw;height:100dvh;max-width:none;max-height:none;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden;color:#272727;font:14px 'Yu Gothic UI','Meiryo','Hiragino Sans',sans-serif}
+#emr-dialog::backdrop{background:rgba(255,255,255,.08)}
+#emr-dialog [hidden]{display:none!important}
+#emr-stage{position:absolute;inset:0;cursor:crosshair;touch-action:none;user-select:none;z-index:0}
+#emr-marks{position:absolute;inset:0;pointer-events:none;z-index:1}
+.emr-mark{position:absolute;border:2px solid #c95a0a;background:#ff990015;box-sizing:border-box;pointer-events:none}
+.emr-mark b{position:absolute;left:-2px;top:-2px;min-width:24px;height:24px;padding:2px 5px;background:#c95a0a;color:#fff;font-size:13px;line-height:20px}
+.emr-mark.emr-draft{border-style:dashed}
+#emr-bar{position:absolute;z-index:4;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #c95a0a;box-shadow:0 -3px 12px #0001;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#emr-bar strong{margin-right:auto}#emr-bar button,#emr-panel button{font:inherit;min-height:38px;padding:7px 11px;border:1px solid #aaa;background:#fff;color:#222;border-radius:2px;cursor:pointer}
+#emr-bar button:disabled,#emr-panel button:disabled{opacity:.45;cursor:not-allowed}
+#emr-panel{position:absolute;z-index:3;right:16px;top:16px;width:330px;max-height:calc(100% - 108px);overflow:auto;overscroll-behavior:contain;background:#fff;border:1px solid #b6a48a;box-shadow:0 4px 20px #0002;padding:16px}
+#emr-panel h2{font-size:17px;margin:0 0 9px}#emr-panel p{line-height:1.6;margin:9px 0;font-size:13px}
+#emr-message{color:#576350;white-space:pre-wrap}#emr-message[data-error=true]{color:#a0341f}
+#emr-comment{box-sizing:border-box;display:block;width:100%;min-height:104px;padding:10px;font:inherit;line-height:1.6;border:1px solid #aaa;resize:vertical;margin:8px 0}
+#emr-editor{border-bottom:1px solid #ddd;padding:0 0 14px;margin-bottom:12px}
+.emr-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+#emr-add,#emr-export{background:#805221!important;color:white!important;border-color:#805221!important}
+#emr-list{margin:12px 0 0;padding:0;list-style:none}#emr-list li{border-top:1px solid #ddd;padding:12px 0}
+#emr-list .emr-note-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;color:#222}
+#emr-list small{display:block;color:#717171;margin:7px 0;line-height:1.5}
+#emr-list button{font-size:12px;min-height:32px;padding:5px 10px}
+#emr-editor label{font-weight:bold}#emr-panel .emr-hint{color:#725b3e;font-size:12px}
+@media(max-width:600px){#emr-bar{padding:8px;gap:6px}#emr-bar strong{flex-basis:100%;font-size:12px}#emr-bar button{font-size:12px;padding:6px 8px;min-height:38px}#emr-panel{top:8px;right:8px;width:min(330px,calc(100% - 16px));max-height:calc(100% - 150px)}}
+`;
+  document.head.append(style);
+  const dialog = document.createElement('dialog');
+  dialog.id = 'emr-dialog';
+  dialog.setAttribute('aria-label', 'モック上の修正指示');
+  dialog.innerHTML = `<div id="emr-stage" aria-label="修正範囲をドラッグして選択"></div><div id="emr-marks" aria-hidden="true"></div>
+    <aside id="emr-panel"><h2>修正コメント</h2><p id="emr-context"></p><p id="emr-message" role="status"></p>
+    <section id="emr-editor" hidden><label for="emr-comment">ここをどう変えますか？</label><textarea id="emr-comment" maxlength="2000" placeholder="例：この数値を大きく／この欄を削除"></textarea><div class="emr-actions"><button type="button" id="emr-cancel-draft">キャンセル</button><button type="button" id="emr-add">コメントを追加</button></div></section>
+    <p class="emr-hint">画面を直接ドラッグして囲みます。選びたい所が隠れる場合は「一覧を隠す」。画面を切り替えるときは「操作に戻る」。</p><p id="emr-count"></p><ol id="emr-list"></ol>
+    <p class="emr-hint">コメントはこのブラウザーに保持します。AIに渡すには「指示を書き出す」でJSONファイルを保存し、チャットに渡してください。画像は保存しません。</p></aside>
+    <footer id="emr-bar"><strong>修正指示中：範囲をドラッグ → コメント</strong><button type="button" id="emr-panel-toggle">一覧を隠す</button><button type="button" id="emr-export">指示を書き出す</button><button type="button" id="emr-exit">操作に戻る</button></footer>`;
+  document.body.append(dialog);
+  const $ = s => dialog.querySelector(s);
+  const stage = $('#emr-stage');
+  let notes = [], context = null, contextKey = '', draft = null, drawing = null;
+  let originalOverflow = '', opener = null, unsaved = false, storageError = '';
+  try {
+    const stored = JSON.parse(localStorage.getItem(key) || 'null');
+    if (stored) {
+      if (stored.schema_version !== 1 || stored.project_id !== project || !Array.isArray(stored.annotations) || stored.annotations.length > 100) throw new Error('形式');
+      if (!stored.annotations.every(n => typeof n.id === 'string' && Number.isInteger(n.number) && typeof n.comment === 'string' && n.comment.length <= 2000 && typeof n.context_key === 'string' && n.context && n.rect && n.anchor && Array.isArray(n.targets))) throw new Error('内容');
+      notes = stored.annotations;
+    }
+  } catch (_) { storageError = '以前の指示を読み出せませんでした。既存データはまだ上書きしていません。'; }
+  const snapshot = () => ({schema_version: 1, project_id: project, annotations: notes});
+  function message(text, error = false) { $('#emr-message').textContent = text; $('#emr-message').dataset.error = String(error); }
+  function persist() {
+    try {
+      const serialized = JSON.stringify(snapshot());
+      localStorage.setItem(key, serialized);
+      if (localStorage.getItem(key) !== serialized) throw new Error('readback');
+      unsaved = false; storageError = '';
+      message('このブラウザーに保持しました。AIへ渡すには「指示を書き出す」。');
+    } catch (_) { unsaved = true; message('ブラウザーへの保存に失敗しました。指示は画面内に残しています。「指示を書き出す」でファイルに保存してください。', true); }
+  }
+  function safeSelector(el) {
+    if (el.id) return '#' + CSS.escape(el.id);
+    const root = el.closest('[id]');
+    const prefix = root && root !== el ? '#' + CSS.escape(root.id) + ' ' : '';
+    for (const attr of ['data-review-target','data-slot','name','data-do']) {
+      if (el.hasAttribute(attr)) {
+        const s = prefix + el.tagName.toLowerCase() + '[' + attr + '=' + JSON.stringify(el.getAttribute(attr)) + ']';
+        if (document.querySelectorAll(s).length === 1) return s;
+      }
+    }
+    const parts = []; let current = el;
+    while (current && current !== document.body) {
+      if (current.id) {parts.unshift('#'+CSS.escape(current.id));break;}
+      const index = [...current.parentElement.children].filter(s=>s.tagName===current.tagName).indexOf(current)+1;
+      parts.unshift(current.tagName.toLowerCase()+':nth-of-type('+index+')');current=current.parentElement;
+    }
+    return parts.join(' > ');
+  }
+  const rectOf = el => {const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};
+  function isVisible(el) {const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden';}
+  function overlap(a,b) {return Math.max(0,Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y));}
+  function locate(rect) {
+    const scope = [...document.querySelectorAll('dialog[open]')].filter(d=>d!==dialog).at(-1) || document.body;
+    const candidates = [scope,...scope.querySelectorAll('button,input,select,label,h1,h2,p,[data-review-target],.slot,.detail,.context,.sheethead,.fields')].filter(el=>!el.closest('#emr-dialog')&&isVisible(el));
+    const targets = candidates.map(el=>({el,r:rectOf(el)})).filter(t=>overlap(rect,t.r)>Math.min(rect.width*rect.height,t.r.width*t.r.height)*.2).sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height).slice(0,24).map(t=>({selector:safeSelector(t.el),tag:t.el.tagName.toLowerCase(),label:(t.el.getAttribute('aria-label') || t.el.labels?.[0]?.textContent || t.el.textContent || '').trim().slice(0,300),rect:t.r}));
+    const enclosing = [scope,...scope.querySelectorAll('*')].filter(el=>!el.closest('#emr-dialog')&&isVisible(el)).map(el=>({el,r:rectOf(el)})).filter(t=>t.r.x<=rect.x+1&&t.r.y<=rect.y+1&&t.r.x+t.r.width>=rect.x+rect.width-1&&t.r.y+t.r.height>=rect.y+rect.height-1).sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);
+    const anchor = enclosing[0];
+    return {targets,anchor:anchor?{selector:safeSelector(anchor.el),rect:anchor.r,relative:{x:(rect.x-anchor.r.x)/anchor.r.width,y:(rect.y-anchor.r.y)/anchor.r.height,width:rect.width/anchor.r.width,height:rect.height/anchor.r.height}}:{selector:null,rect,relative:null}};
+  }
+  function liveRect(note) {
+    if (note.anchor?.selector && note.anchor.relative) {
+      let el;try{el=document.querySelector(note.anchor.selector)}catch(_){return null;}
+      if (!el || !isVisible(el)) return null;
+      const r=rectOf(el), p=note.anchor.relative;
+      return {x:r.x+p.x*r.width,y:r.y+p.y*r.height,width:p.width*r.width,height:p.height*r.height};
+    }
+    const v=note.viewport;return v?{x:note.rect.x*innerWidth/v.width,y:note.rect.y*innerHeight/v.height,width:note.rect.width*innerWidth/v.width,height:note.rect.height*innerHeight/v.height}:note.rect;
+  }
+  function addMark(rect, number, isDraft=false) {
+    if (!rect || !Object.values(rect).every(Number.isFinite)) return;
+    const div=document.createElement('div');div.className='emr-mark'+(isDraft?' emr-draft':'');
+    Object.assign(div.style,{left:rect.x+'px',top:rect.y+'px',width:rect.width+'px',height:rect.height+'px'});
+    const badge=document.createElement('b');badge.textContent=String(number);div.append(badge);$('#emr-marks').append(div);
+  }
+  function paint() {
+    $('#emr-marks').replaceChildren();
+    notes.filter(n=>n.context_key===contextKey&&n.id!==draft?.id).forEach(n=>addMark(liveRect(n),n.number));
+    if (draft?.context_key === contextKey) addMark(liveRect(draft),draft.number,true);
+    if (drawing) addMark(drawing.rect,'＋',true);
+  }
+  function controls() {
+    $('#emr-export').disabled=notes.length===0||!!drawing||!!draft;
+    $('#emr-add').disabled=!draft||!!drawing||!$('#emr-comment').value.trim();
+  }
+  function renderList() {
+    const count=notes.filter(n=>n.context_key===contextKey).length;
+    $('#emr-count').textContent=`この画面 ${count}件 ／ 全体 ${notes.length}件`;
+    $('#emr-list').replaceChildren();
+    for (const note of notes) {
+      const li=document.createElement('li'),title=document.createElement('b'),text=document.createElement('p'),meta=document.createElement('small');
+      title.textContent=`指示 ${note.number}${note.context_key===contextKey?'':'（別画面）'}`;
+      text.className='emr-note-text';text.textContent=note.comment;
+      meta.textContent=[note.context.set_id,note.context.form_title||note.context.sheet_label||note.context.sheet||note.context.title].filter(Boolean).join(' ／ ');
+      const actions=document.createElement('div');actions.className='emr-actions';
+      for(const [action,label] of [['edit','編集'],['delete','削除']]){const button=document.createElement('button');button.type='button';button.textContent=label;button.setAttribute('data-emr-'+action,note.id);button.disabled=!!draft;actions.append(button)}
+      li.append(title,text,meta,actions);$('#emr-list').append(li);
+    }
+    controls();paint();
+  }
+  function showPanel(visible) {$('#emr-panel').hidden=!visible;$('#emr-panel-toggle').textContent=visible?'一覧を隠す':'一覧を表示';}
+  function discardDraft() {draft=null;$('#emr-comment').value='';$('#emr-editor').hidden=true;renderList();}
+  function openEditor(note) {draft=note;showPanel(true);$('#emr-editor').hidden=false;$('#emr-comment').value=note.comment;$('#emr-add').textContent=notes.some(n=>n.id===note.id)?'コメントを更新':'コメントを追加';renderList();$('#emr-comment').focus({preventScroll:true});}
+  function currentContext() {
+    const custom=typeof options.getContext==='function'?options.getContext():{};
+    const form=[...document.querySelectorAll('dialog[open]')].filter(d=>d!==dialog).at(-1);
+    return {path:location.pathname,route:location.hash,title:document.title,form_title:form?.querySelector('header')?.textContent.trim().slice(0,180)||null,...custom};
+  }
+  function open(button) {
+    if(dialog.open)return;
+    opener=button;context=currentContext();contextKey=JSON.stringify(context);draft=null;drawing=null;
+    $('#emr-editor').hidden=true;$('#emr-context').textContent=[context.set_id,context.form_title||context.sheet_label||context.sheet||context.title].filter(Boolean).join(' ／ ');
+    originalOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+    showPanel(true);dialog.showModal();renderList();
+    message(storageError||'変更したい範囲をドラッグしてください。操作画面はそのまま、画像化しません。',!!storageError);
+  }
+  function exit() {
+    if (draft && $('#emr-comment').value.trim() && !window.confirm('入力中のコメントを破棄して操作に戻りますか？追加済みの指示は残ります。'))return;
+    drawing=null;discardDraft();dialog.close();document.body.style.overflow=originalOverflow;opener?.focus({preventScroll:true});
+  }
+  function point(e) {return {x:Math.max(0,Math.min(innerWidth,e.clientX)),y:Math.max(0,Math.min(innerHeight,e.clientY))};}
+  function updateDrawing(e) {const p=point(e);drawing.rect={x:Math.min(p.x,drawing.start.x),y:Math.min(p.y,drawing.start.y),width:Math.abs(p.x-drawing.start.x),height:Math.abs(p.y-drawing.start.y)};paint();}
+  stage.addEventListener('pointerdown',e=>{
+    if(e.button!==0||drawing)return;
+    if(draft){showPanel(true);message('入力中のコメントを追加するか、キャンセルしてください。',true);return;}
+    if(notes.length>=100){message('指示は100件までです。不要な指示を削除してください。',true);showPanel(true);return;}
+    e.preventDefault();try{stage.setPointerCapture(e.pointerId)}catch(_){}
+    const p=point(e);drawing={pointerId:e.pointerId,start:p,rect:{x:p.x,y:p.y,width:0,height:0}};controls();paint();
+  });
+  stage.addEventListener('pointermove',e=>{if(drawing?.pointerId===e.pointerId)updateDrawing(e)});
+  stage.addEventListener('pointerup',e=>{
+    if(drawing?.pointerId!==e.pointerId)return;
+    updateDrawing(e);const rect=drawing.rect;drawing=null;
+    if(rect.width<8||rect.height<8){controls();paint();return;}
+    const now=new Date().toISOString();
+    openEditor({id:crypto.randomUUID?crypto.randomUUID():'note-'+Date.now()+'-'+Math.random().toString(36).slice(2),number:Math.max(0,...notes.map(n=>n.number))+1,comment:'',context:{...context},context_key:contextKey,created_at:now,updated_at:now,viewport:{width:innerWidth,height:innerHeight},scroll:{x:scrollX,y:scrollY},rect,...locate(rect)});
+    message('選んだ範囲への修正内容を書いて「コメントを追加」。');
+  });
+  stage.addEventListener('pointercancel',()=>{drawing=null;controls();paint()});
+  stage.addEventListener('wheel',e=>e.preventDefault(),{passive:false});
+  $('#emr-comment').addEventListener('input',controls);
+  $('#emr-add').addEventListener('click',()=>{
+    if(!draft||drawing||!$('#emr-comment').value.trim())return;
+    const note={...draft,comment:$('#emr-comment').value.trim(),updated_at:new Date().toISOString()};
+    const index=notes.findIndex(n=>n.id===note.id);if(index<0)notes.push(note);else notes[index]=note;
+    draft=null;$('#emr-editor').hidden=true;$('#emr-comment').value='';persist();renderList();
+  });
+  $('#emr-cancel-draft').addEventListener('click',discardDraft);
+  $('#emr-panel-toggle').addEventListener('click',()=>showPanel($('#emr-panel').hidden));
+  $('#emr-exit').addEventListener('click',exit);
+  dialog.addEventListener('cancel',e=>{e.preventDefault();e.stopPropagation();if(drawing){drawing=null;controls();paint()}else exit()});
+  $('#emr-list').addEventListener('click',e=>{
+    const edit=e.target.closest('[data-emr-edit]'),remove=e.target.closest('[data-emr-delete]');
+    if(draft)return;
+    if(edit){const note=notes.find(n=>n.id===edit.getAttribute('data-emr-edit'));if(note)openEditor(structuredClone(note))}
+    if(remove){notes=notes.filter(n=>n.id!==remove.getAttribute('data-emr-delete'));persist();renderList()}
+  });
+  $('#emr-export').addEventListener('click',()=>{
+    if(!notes.length||draft||drawing)return;
+    const result={...snapshot(),exported_at:new Date().toISOString(),instructions:'DOM上の範囲指定とコメントです。画像ではありません。context、targets、anchor、rectを併せて対象を確認してください。'};
+    const blob=new Blob([JSON.stringify(result,null,2)],{type:'application/json;charset=utf-8'}),href=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=href;link.download='excel-mock-feedback-'+String(project).replace(/[^a-zA-Z0-9_-]/g,'_').slice(0,60)+'-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';
+    document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(href),1000);
+    // A download request is not proof that the browser wrote a file.
+    message('書き出しを開始しました。ブラウザーのダウンロードを確認し、そのJSONファイルをチャットに渡してください。');
+  });
+  document.addEventListener('click',e=>{const button=e.target.closest('[data-mock-review-open]');if(button){e.preventDefault();open(button)}});
+  const hosts=[document.querySelector(options.launcherHost||'.intro'),...document.querySelectorAll('dialog:not(#emr-dialog) > header')].filter(Boolean);
+  for(const host of hosts){const button=document.createElement('button');button.type='button';button.textContent='修正指示';button.setAttribute('data-mock-review-open','');if(host.closest('dialog'))host.insertBefore(button,host.lastElementChild);else host.append(button)}
+  window.addEventListener('resize',()=>{if(dialog.open)paint()});
+  window.addEventListener('beforeunload',e=>{if(unsaved||(draft&&$('#emr-comment').value.trim())){e.preventDefault();e.returnValue=''}});
+})();
+</script>
+</body></html>
